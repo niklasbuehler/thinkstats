@@ -1,28 +1,37 @@
 import survey
+import thinkstats
+import math
 
-table = survey.Pregnancies()
-table.ReadRecords()
-print 'Number of pregnancies', len(table.records)
+pregnancies = survey.Pregnancies()
+pregnancies.ReadRecords()
+print 'Number of pregnancies', len(pregnancies.records)
+print
 
-pregs_first = 0
-pregs_others = 0
-length_first = 0
-length_others = 0
+preg_lengths_first = []
+preg_lengths_others = []
 
-for record in table.records:
-    if record.outcome != 1:
+for preg in pregnancies.records:
+    if preg.outcome != 1:
         continue
-    if record.birthord == 1:
-        pregs_first += 1
-        length_first += record.prglength
+    if preg.birthord == 1:
+        preg_lengths_first.append(preg.prglength)
     else:
-        pregs_others += 1
-        length_others += record.prglength
+        preg_lengths_others.append(preg.prglength)
 
-length_first /= pregs_first
-length_others /= pregs_others
+pregs_first = len(preg_lengths_first)
+mean_length_first, var_length_first = thinkstats.MeanVar(preg_lengths_first)
+std_length_first = math.sqrt(var_length_first)
+
+pregs_others = len(preg_lengths_others)
+mean_length_others, var_length_others = thinkstats.MeanVar(preg_lengths_others)
+std_length_others = math.sqrt(var_length_others)
 
 print 'Number of live births, first child', pregs_first
-print 'Average pregnancy length (weeks), first child', length_first
+print 'Mean pregnancy length (weeks), first child', mean_length_first
+print 'Variance of gestation time, first child', var_length_first
+print 'Standard deviation of gestation time, first child', std_length_first
+print
 print 'Number of live births, other children', pregs_others
-print 'Average pregnancy length (weeks), other children', length_others
+print 'Mean pregnancy length (weeks), other children', mean_length_others
+print 'Variance of gestation time, other children', var_length_others
+print 'Standard deviation of gestation time, other children', std_length_others
